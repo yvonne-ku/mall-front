@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-  import { thank, thanksList } from '@api/index.js'
+  import { thank, thanksList } from '@api/customer.js'
   import YShelf from '@components/shelf'
   import product from '@components/product'
   import mallGoods from '@components/mallGoods'

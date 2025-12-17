@@ -106,7 +106,7 @@
 <script>
 import YFooter from "@common/footer";
 import YButton from "@components/YButton";
-import { userLogin, geetest } from "@api/index.js";
+import { userLogin, geetest } from "@api/customer.js";
 import { addCart } from "@api/goods.js";
 import { setStore, getStore, removeStore } from "@utils/storage.js";
 var captcha;
@@ -243,7 +243,7 @@ export default {
           }
         } else {
           this.logintxt = "登录";
-          this.message(res.result.message);
+          this.message("登录失败");
           captcha.reset();
           return false;
         }

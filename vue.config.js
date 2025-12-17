@@ -17,13 +17,19 @@ module.exports = {
     port: 9999, // 前端开发服务器的端口
     open: true, // 自动打开浏览器
     proxy: {
-      "/customer-user/*": {
-        target: "http://127.0.0.1:8002", // 目标后端服务器地址
-        changeOrigin: true, // 伪装成是同源请求
-        pathRewrite: {
-          "^/customer-user": "/api/customer-user", // 重写路径
-        },
+
+      // 使用网关的配置（开发环境测试网关服务）
+      '/api': {
+        target: 'http://localhost:8003',  // Spring Cloud Gateway 地址
+        changeOrigin: true,               // 改变源
+        ws: true,                         // 支持 websocket
       },
+
+      // 不使用网关的配置（开发环境直接测试单个服务）
+      // "/api/customer-user/*": {
+      //   target: "http://127.0.0.1:8002", // 目标后端服务器地址
+      //   changeOrigin: true, // 伪装成是同源请求
+      // },
     },
   },
 

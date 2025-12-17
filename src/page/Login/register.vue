@@ -165,7 +165,7 @@
 <script>
 import YFooter from "@common/footer";
 import YButton from "@components/YButton";
-import {register, geetest, sendSmsCode} from "@/api/index.js";
+import {register, geetest, sendSmsCode} from "@/api/customer.js";
 var captcha;
 export default {
   data() {

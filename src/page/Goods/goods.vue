@@ -63,7 +63,7 @@
 </template>
 <script>
   import { getAllGoods } from '@api/goods.js'
-  import { recommend } from '@api/index.js'
+  import { recommend } from '@api/customer.js'
   import mallGoods from '@components/mallGoods'
   import YButton from '@components/YButton'
   import YShelf from '@components/shelf'

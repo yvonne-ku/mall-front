@@ -117,7 +117,7 @@
   </div>
 </template>
 <script>
-import { productHome } from "@api/index.js";
+import { productHome } from "@api/customer.js";
 import YShelf from "@components/shelf";
 import product from "@components/product";
 import mallGoods from "@components/mallGoods";
