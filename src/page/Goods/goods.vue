@@ -62,7 +62,7 @@
   </div>
 </template>
 <script>
-  import { getAllGoods } from '@api/goods.js'
+  import { homeAllGoods } from '@api/home.js'
   import { recommend } from '@api/customer.js'
   import mallGoods from '@components/mallGoods'
   import YButton from '@components/YButton'
@@ -90,15 +90,15 @@
     methods: {
       handleSizeChange (val) {
         this.pageSize = val
-        this._getAllGoods()
+        this.getAllGoods()
         this.loading = true
       },
       handleCurrentChange (val) {
         this.currentPage = val
-        this._getAllGoods()
+        this.getAllGoods()
         this.loading = true
       },
-      _getAllGoods () {
+      getAllGoods () {
         let cid = this.$route.query.cid
         if (this.min !== '') {
           this.min = Math.floor(this.min)
@@ -116,7 +116,7 @@
             cid: cid
           }
         }
-        getAllGoods(params).then(res => {
+        homeAllGoods(params).then(res => {
           if (res.success === true) {
             this.total = res.result.total
             this.goods = res.result.data
@@ -137,7 +137,7 @@
         this.sort = ''
         this.currentPage = 1
         this.loading = true
-        this._getAllGoods()
+        this.getAllGoods()
       },
       // 价格排序
       sortByPrice (v) {
@@ -145,14 +145,14 @@
         this.sort = v
         this.currentPage = 1
         this.loading = true
-        this._getAllGoods()
+        this.getAllGoods()
       }
     },
     watch: {
       $route (to, from) {
         if (to.fullPath.indexOf('/goods?cid=') >= 0) {
           this.cId = to.query.cid
-          this._getAllGoods()
+          this.getAllGoods()
         }
       }
     },
@@ -161,7 +161,7 @@
     mounted () {
       this.windowHeight = window.innerHeight
       this.windowWidth = window.innerWidth
-      this._getAllGoods()
+      this.getAllGoods()
       recommend().then(res => {
         let data = res.result
         this.recommendPanel = data[0]

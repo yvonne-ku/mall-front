@@ -1,3 +1,12 @@
+<!--
+item 分为三种，一种是商品类型，通过路由跳转，一种是活动，通过完整链接跳转，一种是广告，通过完整链接跳转。
+哪种跳转方式（linkTo 函数）通过 panelContents.type 决定，其中 0 和 2 是商品，其他的（1是活动，3是广告）通过完整链接
+type = 0 轮播图，可能是商品(panelContents.type===0)也可能是活动(panelContents.type===1)
+type = 1 活动面板，全都是活动(panelContents.type===1)
+type = 2 商品展示区，全都是商品(panelContents.type===2)
+type = 3 混合楼层区，包括商品(panelContents.type===2)和广告(panelContents.type===3)
+-->
+
 <template>
   <div class="home">
     <div
@@ -6,6 +15,7 @@
       style="min-height: 35vw"
       v-if="!error"
     >
+      <!--   轮播图   -->
       <div class="banner">
         <div
           class="bg"
@@ -14,6 +24,7 @@
           @mousemove="bgMove($refs.bg, $event)"
           @mouseout="bgOut($refs.bg)"
         >
+          <!--   轮播图内容，实现了淡入淡出   -->
           <transition name="fade">
             <div
               v-for="(item, i) in banner"
@@ -30,6 +41,7 @@
             </div>
           </transition>
         </div>
+        <!--  轮播图下方的分页圆点，用于指示当前轮播图位置   -->
         <div class="page">
           <ul class="dots">
             <li
@@ -43,6 +55,7 @@
         </div>
       </div>
 
+      <!--   活动面板：横向排列多个活动入口，完整链接跳转  -->
       <div v-for="(item, i) in home" :key="i">
         <div class="activity-panel" v-if="item.type === 1">
           <ul class="box">
@@ -58,6 +71,7 @@
           </ul>
         </div>
 
+        <!--  商品展示区：标准的商品列表展示  -->
         <section class="w mt30 clearfix" v-if="item.type === 2">
           <y-shelf :title="item.name">
             <div slot="content" class="hot">
@@ -70,6 +84,7 @@
           </y-shelf>
         </section>
 
+        <!--  混合楼层区：包括大的广告位和商品  -->
         <section class="w mt30 clearfix" v-if="item.type === 3">
           <y-shelf :title="item.name">
             <div slot="content" class="floors">
@@ -104,24 +119,24 @@
     </div>
 
     <!-- 此处可以放些通知数据 -->
-    <!-- <el-dialog
-      title="通知"
-      :visible.sync="dialogVisible"
-      width="30%"
-      style="width:70%;margin:0 auto">
-      <span>首页已升级！XPay个人支付收款系统已上线，赶快去支付体验吧！</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">知道了</el-button>
-      </span>
-    </el-dialog> -->
+<!--    <el-dialog-->
+<!--      title="通知"-->
+<!--      :visible.sync="dialogVisible"-->
+<!--      width="30%"-->
+<!--      style="width:70%;margin:0 auto">-->
+<!--      <span>首页已升级！赶快去支付体验吧！</span>-->
+<!--      <span slot="footer" class="dialog-footer">-->
+<!--        <el-button type="primary" @click="dialogVisible = false">知道了</el-button>-->
+<!--      </span>-->
+<!--    </el-dialog>-->
   </div>
 </template>
 <script>
-import { productHome } from "@api/customer.js";
 import YShelf from "@components/shelf";
 import product from "@components/product";
 import mallGoods from "@components/mallGoods";
 import { setStore, getStore } from "@utils/storage.js";
+import {homePanel} from "@/api/home.js";
 export default {
   data() {
     return {
@@ -163,16 +178,17 @@ export default {
       clearInterval(this.timer);
     },
     linkTo(item) {
+      // panelContents.type === 0 || panelContents.type === 2 属于商品详情页跳转
       if (item.type === 0 || item.type === 2) {
-        // 关联商品
         this.$router.push({
           path: "/goodsDetails",
           query: {
             productId: item.productId,
           },
         });
-      } else {
-        // 完整链接
+      }
+      // 其他应用页面的完整链接跳转
+      else {
         window.location.href = item.fullUrl;
       }
     },
@@ -213,7 +229,7 @@ export default {
     },
   },
   mounted() {
-    productHome().then((res) => {
+    homePanel().then((res) => {
       if (res.success === false) {
         this.error = true;
         return;

@@ -3,12 +3,15 @@
     <div>
       <header class="w">
         <div class="w-box">
+          <!--  导航栏 logo  -->
           <div class="nav-logo">
             <h1 @click="changePage(-1)">
               <router-link to="/" title="Mall">Mall</router-link>
             </h1>
           </div>
+          <!--  导航栏导航项 -->
           <div class="right-box">
+            <!--  导航栏搜索栏  -->
             <div class="nav-list">
               <el-autocomplete
                   placeholder="请输入商品信息"
@@ -22,14 +25,10 @@
                   @keydown.enter.native="handleIconClick"
               >
               </el-autocomplete>
-              <router-link to="/goods"
-              ><a @click="changePage(2)">全部商品</a></router-link
-              >
-              <router-link to="/thanks"
-              ><a @click="changePage(4)">捐赠</a></router-link
-              >
             </div>
+            <!--  导航栏边置导航项  -->
             <div class="nav-aside" ref="aside" :class="{ fixed: st }">
+              <!--  导航栏边置导航项个人中心  -->
               <div class="user pr">
                 <router-link to="/user">个人中心</router-link>
                 <!--用户信息显示-->
@@ -76,6 +75,7 @@
                   </div>
                 </div>
               </div>
+              <!--  导航栏边置导航项购物车  -->
               <div
                   class="shop pr"
                   @mouseover="cartShowState(true)"
@@ -180,6 +180,7 @@
           </div>
         </div>
       </header>
+      <!--  二级导航栏  -->
       <slot name="nav">
         <div class="nav-sub" :class="{ fixed: st }">
           <div class="nav-sub-bg"></div>
@@ -187,26 +188,18 @@
             <div class="w">
               <ul class="nav-list2">
                 <li>
-                  <router-link to="/"
-                  ><a
-                      @click="changGoods(-1)"
+                  <router-link to="/">
+                    <a
+                      @click="changeGoods(-1)"
                       :class="{ active: choosePage === -1 }"
-                  >首页</a
-                  ></router-link
-                  >
+                    >首页</a>
+                  </router-link>
                 </li>
                 <li>
                   <a
-                      @click="changGoods(-2)"
+                      @click="changeGoods(-2)"
                       :class="{ active: choosePage === -2 }"
                   >全部</a
-                  >
-                </li>
-                <li v-for="(item, i) in navList" :key="i">
-                  <a
-                      @click="changGoods(i, item)"
-                      :class="{ active: i === choosePage }"
-                  >{{ item.picUrl }}</a
                   >
                 </li>
               </ul>
@@ -222,7 +215,7 @@
 import YButton from "@components/YButton";
 import { mapMutations, mapState } from "vuex";
 import { getCartList, cartDel, getQuickSearch } from "@api/goods";
-import { loginOut, navList } from "@api/index";
+import { loginOut } from "@api/index";
 import { setStore, getStore, removeStore } from "@utils/storage";
 // import store from '../store/'
 import "element-ui/lib/theme-default/index.css";
@@ -242,7 +235,6 @@ export default {
       searchResults: [],
       timeout: null,
       token: "",
-      navList: [],
     };
   },
   computed: {
@@ -302,7 +294,7 @@ export default {
     changePage(v) {
       this.choosePage = v;
     },
-    changGoods(v, item) {
+    changeGoods(v, item) {
       this.changePage(v);
       if (v === -1) {
         this.$router.push({
@@ -453,14 +445,8 @@ export default {
           "//" + window.location.host + "/#/goodsDetails?productId=" + productId
       );
     },
-    _getNavList() {
-      navList().then((res) => {
-        this.navList = res.result;
-      });
-    },
   },
   mounted() {
-    this._getNavList();
     this.token = getStore("token");
     if (this.login) {
       this._getCartList();
