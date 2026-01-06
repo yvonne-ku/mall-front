@@ -54,7 +54,7 @@ Vue.use(VueCookie);
 Vue.use(VueLazyload, {
   // preLoad: 1.3,
   // error: 'dist/error.png',
-  loading: "/images/load.gif",
+  loading: require("@/assets/images/load.gif"),
   // attempt: 1
 });
 

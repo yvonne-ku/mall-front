@@ -22,7 +22,7 @@ module.exports = {
         target: "http://127.0.0.1:8002", // 目标后端服务器地址
         changeOrigin: true, // 伪装成是同源请求
       },
-      "/api/home/*": {
+      "/goods/*": {
         target: "http://127.0.0.1:8009", // 目标后端服务器地址
         changeOrigin: true, // 伪装成是同源请求
       },

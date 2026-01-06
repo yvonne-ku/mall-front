@@ -319,7 +319,6 @@ export default {
     },
     init_geetest() {
       geetest().then((res) => {
-        res = res.data;
         this.statusKey = res.statusKey;
         window.initGeetest(
           {

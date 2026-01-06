@@ -57,7 +57,7 @@
       </div>
       <div class="no-info" v-if="noResult" >
         <div class="no-data">
-          <img src="/static/images/no-search.png">
+          <img src="@/assets/images/no-search.png">
           <br> 抱歉！没有为您找到相关的商品
         </div>
         <section class="section">
@@ -70,7 +70,7 @@
       </div>
       <div class="no-info" v-if="error">
         <div class="no-data">
-          <img src="/static/images/error.png">
+          <img src="@/assets/images/error.png">
           <br> 抱歉！出错了...
         </div>
         <section class="section">
@@ -128,9 +128,9 @@
       _getSearch () {
         let params = {
           params: {
-            key: this.key,
-            size: this.pageSize,
+            description: this.key,
             page: this.currentPage,
+            size: this.pageSize,
             sort: this.sort,
             priceGt: this.min,
             priceLte: this.max
@@ -138,12 +138,9 @@
         }
         getSearch(params).then(res => {
           if (res.success === true) {
-            this.goods = res.result.itemList
-            this.total = res.result.recordCount
-            this.noResult = false
-            if (this.total === 0) {
-              this.noResult = true
-            }
+            this.goods = res.result.data
+            this.total = res.result.total
+            this.noResult = this.total === 0;
             this.error = false
           } else {
             this.error = true

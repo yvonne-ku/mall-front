@@ -11,7 +11,7 @@
           </div>
           <!--  导航栏导航项 -->
           <div class="right-box">
-            <!--  导航栏搜索栏  -->
+            <!--  导航栏搜索栏：先不做下拉提示，这个合理来说要做一个 sku_name 缓存 -->
             <div class="nav-list">
               <el-autocomplete
                   placeholder="请输入商品信息"
@@ -19,8 +19,6 @@
                   v-model="input"
                   minlength="1"
                   maxlength="100"
-                  :fetch-suggestions="querySearchAsync"
-                  @select="handleSelect"
                   :on-icon-click="handleIconClick"
                   @keydown.enter.native="handleIconClick"
               >
@@ -214,8 +212,8 @@
 <script>
 import YButton from "@components/YButton";
 import { mapMutations, mapState } from "vuex";
-import { getCartList, cartDel, getQuickSearch } from "@api/goods";
-import { loginOut } from "@api/index";
+import { loginOut } from "@api/customer";
+import { getCartList, cartDel } from "@api/goods";
 import { setStore, getStore, removeStore } from "@utils/storage";
 // import store from '../store/'
 import "element-ui/lib/theme-default/index.css";
@@ -314,57 +312,57 @@ export default {
         }
       }
     },
-    // 搜索框提示
-    loadAll() {
-      let params = {
-        params: {
-          key: this.input,
-        },
-      };
-      getQuickSearch(params).then((res) => {
-        if (res === null || res === "") {
-          return;
-        }
-        if (res.error) {
-          this.showError(res.error.reason);
-          return;
-        }
-        var array = [];
-        var maxSize = 5;
-        if (res.hits.hits.length <= 5) {
-          maxSize = res.hits.hits.length;
-        }
-        for (var i = 0; i < maxSize; i++) {
-          var obj = {};
-          obj.value = res.hits.hits[i]._source.productName;
-          array.push(obj);
-        }
-        if (array.length !== 0) {
-          this.searchResults = array;
-        } else {
-          this.searchResults = [];
-        }
-      });
-    },
-    querySearchAsync(queryString, cb) {
-      if (this.input === undefined) {
-        cb([]);
-        return;
-      }
-      this.input = this.input.trim();
-      if (this.input === "") {
-        cb([]);
-        return;
-      } else {
-        this.loadAll();
-        setTimeout(() => {
-          cb(this.searchResults);
-        }, 300);
-      }
-    },
-    handleSelect(item) {
-      this.input = item.value;
-    },
+    // // 搜索框提示
+    // loadAll() {
+    //   let params = {
+    //     params: {
+    //       description: this.input,
+    //     },
+    //   };
+    //   getSearch(params).then((res) => {
+    //     if (res === null || res === "") {
+    //       return;
+    //     }
+    //     if (res.error) {
+    //       this.showError(res.error.reason);
+    //       return;
+    //     }
+    //     var array = [];
+    //     var maxSize = 5;
+    //     if (res.hits.hits.length <= 5) {
+    //       maxSize = res.hits.hits.length;
+    //     }
+    //     for (var i = 0; i < maxSize; i++) {
+    //       var obj = {};
+    //       obj.value = res.hits.hits[i]._source.productName;
+    //       array.push(obj);
+    //     }
+    //     if (array.length !== 0) {
+    //       this.searchResults = array;
+    //     } else {
+    //       this.searchResults = [];
+    //     }
+    //   });
+    // },
+    // querySearchAsync(queryString, cb) {
+    //   if (this.input === undefined) {
+    //     cb([]);
+    //     return;
+    //   }
+    //   this.input = this.input.trim();
+    //   if (this.input === "") {
+    //     cb([]);
+    //     return;
+    //   } else {
+    //     this.loadAll();
+    //     setTimeout(() => {
+    //       cb(this.searchResults);
+    //     }, 300);
+    //   }
+    // },
+    // handleSelect(item) {
+    //   this.input = item.value;
+    // },
     // 购物车显示
     cartShowState(state) {
       this.SHOW_CART({ showCart: state });

@@ -219,11 +219,9 @@ export default {
         seccode: result.geetest_seccode,
         statusKey: this.statusKey,
       }).then((res) => {
-        if (res.success === true) {
-          setStore("token", res.data.accessToken);
-          setStore("userId", res.data.customerUserId);
-          setStore("account", res.data.account);
-          setStore("username", res.data.username);
+        if (res.result.state === 1) {
+          setStore("token", res.result.token);
+          setStore("userId", res.result.id);
           // 登录后添加当前缓存中的购物车
           if (this.cart.length) {
             for (var i = 0; i < this.cart.length; i++) {
@@ -251,7 +249,6 @@ export default {
     },
     init_geetest() {
       geetest().then((res) => {
-        res = res.data;
         this.statusKey = res.statusKey;
         window.initGeetest(
             {

@@ -136,7 +136,7 @@ import YShelf from "@components/shelf";
 import product from "@components/product";
 import mallGoods from "@components/mallGoods";
 import { setStore, getStore } from "@utils/storage.js";
-import {homePanel} from "@/api/home.js";
+import {homePanel} from "@/api/goods";
 export default {
   data() {
     return {

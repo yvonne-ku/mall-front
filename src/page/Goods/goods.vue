@@ -62,8 +62,7 @@
   </div>
 </template>
 <script>
-  import { homeAllGoods } from '@api/home.js'
-  import { recommend } from '@api/customer.js'
+import {homeAllGoods, homeRecommend} from '@api/goods'
   import mallGoods from '@components/mallGoods'
   import YButton from '@components/YButton'
   import YShelf from '@components/shelf'
@@ -118,6 +117,7 @@
         }
         homeAllGoods(params).then(res => {
           if (res.success === true) {
+            console.log(res.result);
             this.total = res.result.total
             this.goods = res.result.data
             this.noResult = false
@@ -162,7 +162,7 @@
       this.windowHeight = window.innerHeight
       this.windowWidth = window.innerWidth
       this.getAllGoods()
-      recommend().then(res => {
+      homeRecommend().then(res => {
         let data = res.result
         this.recommendPanel = data[0]
       })

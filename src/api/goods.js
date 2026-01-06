@@ -1,5 +1,29 @@
 import http from "./public";
 
+// 首页接口
+export const homePanel = (params) => {
+  return http.fetchGet('/goods/panel', params)
+}
+
+// 全部商品
+export const homeAllGoods = (params) => {
+  return http.fetchGet("/goods/allGoods", params);
+};
+
+// 推荐板块
+export const homeRecommend = (params) => {
+  return http.fetchGet('/goods/recommend', params)
+}
+
+// 商品列表
+export const getSearch = (params) => {
+  return http.fetchGet("/goods/search", params);
+};
+
+
+
+
+
 
 
 // 获取购物车列表
@@ -77,12 +101,4 @@ export const productDet = (params) => {
 // 删除订单
 export const delOrder = (params) => {
   return http.fetchGet("/member/delOrder", params);
-};
-// 商品列表
-export const getSearch = (params) => {
-  return http.fetchGet("/goods/search", params);
-};
-// 快速搜索
-export const getQuickSearch = (params) => {
-  return http.fetchGet("/goods/quickSearch", params);
 };
