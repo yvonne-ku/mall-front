@@ -110,6 +110,7 @@ import { userLogin, geetest } from "@api/customer.js";
 import { addCart } from "@api/goods.js";
 import { setStore, getStore, removeStore } from "@utils/storage.js";
 var captcha;
+var captchaValidate;
 export default {
   data() {
     return {
@@ -204,8 +205,7 @@ export default {
         this.message("用户名或者密码不能为空!");
         return false;
       }
-      const result = captcha.getValidate();
-      if (!result) {
+      if (!captchaValidate) {
         this.message("请完成验证");
         this.logintxt = "登录";
         return false;
@@ -214,10 +214,11 @@ export default {
         type: "username",
         username: this.ruleForm.username,
         password: this.ruleForm.password,
-        challenge: result.geetest_challenge,
-        validate: result.geetest_validate,
-        seccode: result.geetest_seccode,
-        statusKey: this.statusKey,
+        captchaId: captchaValidate.captcha_id,
+        captchaOutput: captchaValidate.captcha_output,
+        genTime: captchaValidate.gen_time,
+        lotNumber: captchaValidate.lot_number,
+        passToken: captchaValidate.pass_token
       }).then((res) => {
         if (res.result.state === 1) {
           setStore("token", res.result.token);
@@ -248,26 +249,30 @@ export default {
       });
     },
     init_geetest() {
-      geetest().then((res) => {
-        this.statusKey = res.statusKey;
-        window.initGeetest(
-            {
-              gt: res.gt,
-              challenge: res.challenge,
-              new_captcha: res.newCaptcha,
-              offline: !res.success,
-              product: "popup",
-              width: "100%",
-            },
-            function (captchaObj) {
-              captcha = captchaObj;
-              captchaObj.appendTo("#captcha");
-              captchaObj.onReady(function () {
-                document.getElementById("wait").style.display = "none";
-              });
-            }
-        );
-      });
+      window.initGeetest4({
+        captchaId: '6cfa0f940dfdf09f94df903f4a5fb077',  // 你的业务ID
+        product: "popup",          // 展现形式：'popup'(弹出), 'float'(浮动), 'bind'(结合按钮)
+        nativeButton: {
+          width: '100%',  // 使按钮的宽度与其父元素的宽度一致
+          height: '50px'  // 高度可以根据你的输入框高度调整
+        }
+      },(captchaObj) => {
+        captcha = captchaObj;             // 返回验证码对象，将验证码对象赋值给全局变量 captcha，二次验证时（点击登录按钮时）返回给后端
+        captchaObj.appendTo("#captcha");  // 将验证码对象添加到指定容器，在 UI 上展示验证码
+        captchaObj.onSuccess(() => {
+          // 用户已经完成了验证操作，且通过了极验的算法检测，返回验证成功凭证
+          captchaValidate = captchaObj.getValidate();
+          console.log(captchaValidate)
+        });
+        captchaObj.onReady(() => {
+          // 验证码 UI 加载完成后，隐藏加载状态
+          document.getElementById("wait").style.display = "none";
+        });
+        captchaObj.onError((err) => {
+          // 验证码 UI 加载错误
+          console.error("验证码加载错误:", err);
+        });
+      })
     },
   },
   mounted() {

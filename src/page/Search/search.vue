@@ -86,7 +86,7 @@
 </template>
 <script>
   import { getSearch } from '@api/goods.js'
-  import { recommend } from '@api/customer.js'
+  import { getRecommend } from '@api/goods.js'
   import mallGoods from '@components/mallGoods'
   import YButton from '@components/YButton'
   import YShelf from '@components/shelf'
@@ -173,7 +173,7 @@
       this.windowWidth = window.innerWidth
       this.key = this.$route.query.key
       this._getSearch()
-      recommend().then(res => {
+      getRecommend().then(res => {
         let data = res.result
         this.recommendPanel = data[0]
       })

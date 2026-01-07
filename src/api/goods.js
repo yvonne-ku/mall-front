@@ -11,7 +11,7 @@ export const homeAllGoods = (params) => {
 };
 
 // 推荐板块
-export const homeRecommend = (params) => {
+export const getRecommend = (params) => {
   return http.fetchGet('/goods/recommend', params)
 }
 

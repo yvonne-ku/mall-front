@@ -15,13 +15,6 @@ export const userInfo = (params) => {
 export const register = (params) => {
   return http.fetchPost("/member/register", params);
 };
-// 极验验证码
-export const geetest = (params) => {
-  return http.fetchGet(
-    "/member/geetestInit?t=" + new Date().getTime(),
-    params
-  );
-};
 // 请求验证码
 export const sendSmsCode = (params) => {
   return http.fetchPost("/member/verify/code/send", params);
