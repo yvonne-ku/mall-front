@@ -210,13 +210,15 @@
 <script>
 import {
   getCartList,
+  productDet,
+  submitOrder,
+} from "@api/goods";
+import {
   addressList,
   addressUpdate,
   addressAdd,
   addressDel,
-  productDet,
-  submitOrder,
-} from "@api/goods";
+} from "@api/customer";
 import YShelf from "@components/shelf";
 import YButton from "@components/YButton";
 import YPopup from "@components/popup";
@@ -402,7 +404,8 @@ export default {
     },
     // 删除
     del(addressId) {
-      this._addressDel({ addressId });
+      let userId = this.userId;
+      this._addressDel({ userId, addressId });
     },
     _productDet(productId) {
       productDet({ params: { productId } }).then((res) => {
