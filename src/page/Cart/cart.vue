@@ -225,8 +225,8 @@
           let productNum = item.productNum
           // 勾选
           if (type === 'check') {
-            let newChecked = checked === '1' ? '0' : '1'
-            this._cartEdit(this.userId, productId, productNum, newChecked)
+            checked = checked === '1' ? '0' : '1'
+            this._cartEdit(this.userId, productId, productNum, checked)
           }
         } else {
           console.log('缺少所需参数')
@@ -267,6 +267,7 @@
     mounted () {
       this.userId = getStore('userId')
       this.INIT_BUYCART()
+      console.log(this.cartList)
     },
     components: {
       YButton,

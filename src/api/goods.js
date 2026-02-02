@@ -22,10 +22,6 @@ export const getSearch = (params) => {
 
 
 
-
-
-
-
 // 获取购物车列表
 export const getCartList = (params) => {
   return http.fetchPost("/member/cartList", params);
@@ -54,6 +50,14 @@ export const editCheckAll = (params) => {
 export const cartDel = (params) => {
   return http.fetchPost("/member/cartDel", params);
 };
+
+
+
+// 获取订单列表
+export const orderList = (params) => {
+  return http.fetchGet("/member/orderList", params);
+};
+
 // 获取用户地址
 export const addressList = (params) => {
   return http.fetchPost("/member/addressList", params);
@@ -82,10 +86,7 @@ export const submitOrder = (params) => {
 export const payMent = (params) => {
   return http.fetchPost("/member/payOrder", params);
 };
-// 获取用户订单
-export const orderList = (params) => {
-  return http.fetchGet("/member/orderList", params);
-};
+
 // 获取单个订单详情
 export const getOrderDet = (params) => {
   return http.fetchGet("/member/orderDetail", params);

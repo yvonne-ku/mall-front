@@ -19,3 +19,4 @@ export const register = (params) => {
 export const sendSmsCode = (params) => {
   return http.fetchPost("/member/verify/code/send", params);
 };
+
