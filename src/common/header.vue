@@ -200,6 +200,13 @@
                   >全部</a
                   >
                 </li>
+                <li v-for="(item, i) in navList" :key="i">
+                  <a
+                      @click="changGoods(i, item)"
+                      :class="{ active: i === choosePage }"
+                  >{{ item.picUrl }}</a
+                  >
+                </li>
               </ul>
               <div></div>
             </div>

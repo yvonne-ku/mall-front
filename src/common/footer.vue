@@ -2,118 +2,6 @@
   <div class="footer">
     <div class="container">
       <div class="siteinfo">
-        <ul class="c0">
-          <h3 class="c1">会员服务</h3>
-          <ul>
-            <li class="c2">
-              <a
-                  class="c3"
-                  target="_blank"
-                  href="https://magestack.cn/planet.html"
-              >加入会员</a
-              >
-            </li>
-            <li class="c2">
-              <a
-                  class="c3"
-                  target="_blank"
-                  href="https://magestack.cn/planet.html"
-              >商城专栏</a
-              >
-            </li>
-            <li class="c2">
-              <a
-                  class="c3"
-                  target="_blank"
-                  href="https://magestack.cn/congomall/preparation/video.html"
-              >视频教学</a
-              >
-            </li>
-          </ul>
-        </ul>
-        <ul class="c0">
-          <h3 class="c1">服务支持</h3>
-          <ul>
-            <li class="c2">
-              <a class="c3" target="_blank" href="https://github.com/magestacks"
-              >官方开源</a
-              >
-            </li>
-            <li class="c2">
-              <a
-                  class="c3"
-                  target="_blank"
-                  href="https://github.com/opengoofy/congomall/tree/main/congomall-front"
-              >项目前端</a
-              >
-            </li>
-            <li class="c2">
-              <a
-                  class="c3"
-                  target="_blank"
-                  href="https://github.com/opengoofy/congomall"
-              >项目后端</a
-              >
-            </li>
-          </ul>
-        </ul>
-        <!-- <ul class="c0">
-          <h3 class="c1">自助服务</h3>
-          <ul>
-            <li class="c2">
-              <a class="c3" target="_blank" href="http://blog.exrick.cn"
-                >个人博客</a
-              >
-            </li>
-            <li class="c2">
-              <a class="c3" target="_blank" href="http://blog.exrick.cn/intro/"
-                >个人简介</a
-              >
-            </li>
-            <li class="c2">
-              <a
-                class="c3"
-                target="_blank"
-                href="https://www.bilibili.com/video/av15860053/"
-                >个人视频</a
-              >
-            </li>
-          </ul>
-        </ul> -->
-        <ul class="c0">
-          <h3 class="c1">其它项目</h3>
-          <ul>
-            <li class="c2">
-              <a
-                  class="c3"
-                  target="_blank"
-                  href="https://github.com/opengoofy/hippo4j"
-              >Hippo4j动态线程池</a
-              >
-            </li>
-            <li class="c2">
-              <a
-                  class="c3"
-                  target="_blank"
-                  href="https://github.com/opengoofy/crane4j"
-              >Crane4j数据字典转换</a
-              >
-            </li>
-            <li class="c2">
-              <a
-                  class="c3"
-                  target="_blank"
-                  href="https://gitee.com/opengoofy/12306"
-              >12306铁路购票系统</a
-              >
-            </li>
-            <!-- <li class="c2">
-              <a class="c3" target="_blank" href="https://github.com/opengoofy"
-                >待开发...</a
-              >
-            </li> -->
-          </ul>
-        </ul>
         <!-- <ul class="c0">
           <h3 class="c1">友情链接</h3>
           <ul>
@@ -161,26 +49,23 @@
           <li class="tel">
             <a
                 class="c5"
-                href="https://magestack.cn/congomall/preparation/group.html"
+                href="https://github.com/yvonne-ku"
                 target="_blank"
-            >点击加交流群</a
+            >日拱一卒，欢迎交流</a
             >
           </li>
-          <li class="time">周一至周日 10:00-23:00（仅限 Star 用户联系）</li>
-          <li class="online">
-            <y-button
-                text="在线帮助"
-                class="button"
-                @btnClick="open3"
-            ></y-button>
-          </li>
+          <li class="time">周一至周日 10:00-23:00 </li>
         </ul>
       </div>
 
       <div class="copyright">
+<!--        <h4 class="content-c2">-->
+<!--          Copyright ©2023, magestack.cn Co., Ltd. All Rights-->
+<!--          Reserved.-->
+<!--        </h4>-->
         <h4 class="content-c2">
-          Copyright ©2023, magestack.cn Co., Ltd. All Rights
-          Reserved.本网站设计内容大部分属锤子科技
+          Copyright ©2026, subject of right. All Rights
+          Reserved.
         </h4>
         <ul class="privacy">
           <li class="content-c1">
@@ -188,14 +73,6 @@
           </li>
           <li class="content-c1">
             <a class="content-c0" @click="open2">隐私条款</a>
-          </li>
-          <li class="content-c1">
-            <a
-                class="content-c0"
-                target="_blank"
-                href="https://github.com/magestacks"
-            >开发者中心</a
-            >
           </li>
         </ul>
       </div>
@@ -205,8 +82,8 @@
             href="http://www.miibeian.gov.cn/"
             target="_blank"
         >
-          <span class="content-c3">京ICP备2021038095号</span>
-          <span class="content-c3">京ICP备2021038095号-5</span>
+          <span class="content-c3">京ICP备1234567890号</span>
+          <span class="content-c3">京ICP备1234567890号-5</span>
         </a>
       </div>
     </div>
@@ -223,7 +100,7 @@ export default {
       this.$notify.info({
         title: "法律声明",
         message:
-            "此仅为个人练习开源模仿项目，仅供学习参考，承担不起任何法律问题",
+            "此仅为个人练习项目，承担不起任何法律问题",
       });
     },
     open2() {
@@ -231,22 +108,6 @@ export default {
         title: "隐私条款",
         message:
             "本网站将不会严格遵守有关法律法规和本隐私政策所载明的内容收集、使用您的信息",
-      });
-    },
-    open3() {
-      window.open("https://magestack.cn/congomall/preparation/group.html");
-    },
-    open4() {
-      this.$notify.info({
-        title: "支付方式",
-        message: "支持支付宝、微信等方式捐赠",
-      });
-    },
-    open5() {
-      this.$notify({
-        title: "送货政策",
-        message: "本网站所有商品购买后不会发货，将用作捐赠",
-        type: "warning",
       });
     },
   },
@@ -312,24 +173,25 @@ export default {
   line-height: 1;
   color: #646464;
   top: -2px;
+  right: -4px;
   position: relative;
+  text-align: right;
 }
 
 .c5 {
   color: #646464;
-  right: -60px;
   position: relative;
 }
 
 .time {
   margin-top: 5px;
-  right: -4px;
-  position: relative;
   clear: both;
   width: 241px;
   font-size: 12px;
   line-height: 18px;
   color: #c3c3c3;
+  right: -30px;
+  position: relative;
   text-align: right;
 }
 

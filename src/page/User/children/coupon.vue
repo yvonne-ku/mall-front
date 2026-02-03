@@ -5,7 +5,7 @@
         <div style="padding: 100px 0;text-align: center">
           <img src="@assets/images/no-search.png">
           <br>
-          <span class="no-discount">您目前还没有优惠券</span>
+          <span class="no-discount">优惠券仍在开发中...</span>
         </div>
       </div>
     </y-shelf>

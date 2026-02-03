@@ -91,7 +91,7 @@
   </div>
 </template>
 <script>
-import { addressList, addressUpdate, addressAdd, addressDel } from "@api/goods";
+import { addressList, addressUpdate, addressAdd, addressDel } from "@api/customer";
 import YButton from "@components/YButton";
 import YPopup from "@components/popup";
 import YShelf from "@components/shelf";

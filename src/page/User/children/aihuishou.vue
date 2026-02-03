@@ -5,7 +5,7 @@
         <div style="padding: 100px 0; text-align: center">
           <img src="@assets/images/smile.png" />
           <br />
-          <span class="support">抱歉，暂时无以旧换新服务</span>
+          <span class="support">抱歉，暂无以旧换新服务</span>
         </div>
       </div>
     </y-shelf>
