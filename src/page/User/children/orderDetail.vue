@@ -3,7 +3,7 @@
     <y-shelf v-bind:title="orderTitle">
       <div slot="content">
         <div v-loading="loading" element-loading-text="加载中..." style="min-height: 10vw;" v-if="orderList.length">
-          <div class="orderStatus" v-if="orderStatus !== -1 && orderStatus !== 6">
+          <div class="orderStatus" v-if="orderStatus !== -1">
             <el-steps :space="200" :active="orderStatus">
               <el-step title="下单" v-bind:description="createTime"></el-step>
               <el-step title="付款" v-bind:description="payTime"></el-step>
@@ -13,12 +13,6 @@
             </el-steps>
           </div>
           <div class="orderStatus-close" v-if="orderStatus === -1">
-            <el-steps :space="780" :active="2">
-              <el-step title="下单" v-bind:description="createTime"></el-step>
-              <el-step title="交易关闭" v-bind:description="closeTime"></el-step>
-            </el-steps>
-          </div>
-          <div class="orderStatus-close" v-if="orderStatus === 6">
             <el-steps :space="780" :active="2">
               <el-step title="下单" v-bind:description="createTime"></el-step>
               <el-step title="交易关闭" v-bind:description="closeTime"></el-step>
@@ -34,7 +28,7 @@
             </ul>
             <p class="realtime">
               <span>您的付款时间还有 </span>
-              <span class="red"><countDown v-bind:endTime="countTime" endText="已结束"></countDown></span>
+              <span class="red"><countDown v-bind:endTime="this.endTimestamp" endText="已结束"></countDown></span>
               <span>，超时后订单将自动取消。</span>
             </p>
           </div>
@@ -46,7 +40,7 @@
               <span>请耐心等待审核，审核结果将发送到您的邮箱，并且您所填写的捐赠数据将显示在捐赠表中。</span>
             </p>
           </div>
-          <div class="status-now" v-if="orderStatus === -1 || orderStatus === 6">
+          <div class="status-now" v-if="orderStatus === -1">
             <ul>
               <li class="status-title"><h3>订单状态：已关闭</h3></li>
             </ul>
@@ -54,7 +48,7 @@
               <span>您的订单已关闭。</span>
             </p>
           </div>
-          <div class="status-now" v-if="orderStatus === 5">
+          <div class="status-now" v-if="orderStatus === 4">
             <ul>
               <li class="status-title"><h3>订单状态：已完成</h3></li>
             </ul>
@@ -141,9 +135,9 @@
         payTime: '',
         closeTime: '',
         finishTime: '',
+        endTimestamp: null,
         orderTotal: '',
         loading: true,
-        countTime: 0
       }
     },
     methods: {
@@ -159,9 +153,10 @@
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
       _getOrderDet () {
+        let orderSn = this.orderId
         let params = {
           params: {
-            orderId: this.orderId
+            orderSn: orderSn
           }
         }
         getOrderDet(params).then(res => {
@@ -169,12 +164,12 @@
             this.orderStatus = 1
           } else if (res.result.orderStatus === '1') {
             this.orderStatus = 2
+          } else if (res.result.orderStatus === '2') {
+            this.orderStatus = 3
+          } else if (res.result.orderStatus === '3') {
+            this.orderStatus = 4
           } else if (res.result.orderStatus === '4') {
-            this.orderStatus = 5
-          } else if (res.result.orderStatus === '5') {
             this.orderStatus = -1
-          } else if (res.result.orderStatus === '6') {
-            this.orderStatus = 6
           }
           this.orderList = res.result.goodsList
           this.orderTotal = res.result.orderTotal
@@ -182,18 +177,29 @@
           this.tel = res.result.addressInfo.tel
           this.streetName = res.result.addressInfo.streetName
           this.createTime = res.result.createDate
-          this.closeTime = res.result.closeDate
           this.payTime = res.result.payDate
-          if (this.orderStatus === 5) {
+          this.closeTime = res.result.closeDate
+          // 如果是已完成
+          if (this.orderStatus === 4) {
             this.finishTime = res.result.finishDate
-          } else {
-            this.countTime = res.result.finishDate
+          }
+          // 如果是待支付，默认 15 分钟
+          if (this.orderStatus === 1) {
+            const createDate = new Date(this.createTime)
+            const endDate = new Date(createDate.getTime() + 15 * 60 * 1000)
+            this.endTimestamp = endDate.getTime()
           }
           this.loading = false
         })
       },
       _cancelOrder () {
-        cancelOrder({orderId: this.orderId}).then(res => {
+        let orderSn = this.orderId
+        let params = {
+          params: {
+            orderSn: orderSn,
+          },
+        };
+        cancelOrder(params).then(res => {
           if (res.success === true) {
             this._getOrderDet()
           } else {

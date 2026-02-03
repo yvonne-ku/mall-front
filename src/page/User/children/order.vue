@@ -162,18 +162,16 @@ export default {
       });
     },
     getOrderStatus(status) {
-      if (status === "1") {
-        return "支付审核中";
-      } else if (status === "2") {
+      if (status === "0") {
+        return "待付款";
+      } else if (status === "1") {
         return "待发货";
+      } else if (status === "2") {
+        return "已发货";
       } else if (status === "3") {
-        return "待收货";
-      } else if (status === "4") {
         return "交易成功";
-      } else if (status === "5") {
+      } else if (status === "4") {
         return "交易关闭";
-      } else if (status === "6") {
-        return "支付失败";
       }
     },
     _orderList() {
@@ -193,7 +191,7 @@ export default {
     _delOrder(orderId, i) {
       let params = {
         params: {
-          orderId: orderId,
+          orderSn: orderId,
         },
       };
       delOrder(params).then((res) => {

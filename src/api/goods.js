@@ -50,6 +50,10 @@ export const editCheckAll = (params) => {
 export const cartDel = (params) => {
   return http.fetchPost("/member/cartDel", params);
 };
+// 生成订单
+export const submitOrder = (params) => {
+  return http.fetchPost("/member/addOrder", params);
+};
 
 
 
@@ -57,29 +61,28 @@ export const cartDel = (params) => {
 export const orderList = (params) => {
   return http.fetchGet("/member/orderList", params);
 };
-
-// 生成订单
-export const submitOrder = (params) => {
-  return http.fetchPost("/member/addOrder", params);
+// 获取单个订单详情
+export const getOrderDet = (params) => {
+  return http.fetchGet("/member/orderDetail", params);
 };
+// 删除订单
+export const delOrder = (params) => {
+  return http.fetchGet("/member/delOrder", params);
+};
+// 取消订单
+export const cancelOrder = (params) => {
+  return http.fetchGet("/member/cancelOrder", params);
+};
+
+
+
+
 // 支付
 export const payMent = (params) => {
   return http.fetchPost("/member/payOrder", params);
 };
 
-// 获取单个订单详情
-export const getOrderDet = (params) => {
-  return http.fetchGet("/member/orderDetail", params);
-};
-// 取消订单
-export const cancelOrder = (params) => {
-  return http.fetchPost("/member/cancelOrder", params);
-};
 // 商品详情
 export const productDet = (params) => {
   return http.fetchGet("/goods/productDet", params);
-};
-// 删除订单
-export const delOrder = (params) => {
-  return http.fetchGet("/member/delOrder", params);
 };

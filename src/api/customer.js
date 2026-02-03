@@ -21,6 +21,15 @@ export const sendSmsCode = (params) => {
 };
 
 
+// 上传图片
+export const uploadAvatarImg = (params) => {
+  return http.fetchPost('/member/uploadAvatarImg', params)
+}
+// 修改头像
+export const updateAvatarImg = (params) => {
+  return http.fetchPost('/member/updateAvatarImg', params)
+}
+
 
 // 获取用户地址
 export const addressList = (params) => {

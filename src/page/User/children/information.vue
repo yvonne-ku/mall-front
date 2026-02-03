@@ -76,7 +76,7 @@
 </template>
 <script>
   import YButton from '@components/YButton'
-  import { upload } from '@api/index'
+  import {updateAvatarImg, uploadAvatarImg} from '@api/customer'
   import YShelf from '@components/shelf'
   import vueCropper from 'vue-cropper'
   import { mapState, mapMutations } from 'vuex'
@@ -149,9 +149,10 @@
       cropper () {
         this.message('上传中...')
         if (this.option.img) {
+          // 调用这个方法，并定义裁剪完成的后处理函数，即定义回调函数
           this.$refs.cropper.getCropData((data) => {
             this.imgSrc = data
-            upload({userId: this.userId, token: this.token, imgData: data}).then(res => {
+            uploadAvatarImg({userId: this.userId, token: this.token, imgData: data}).then(res => {
               if (res.success === true) {
                 let path = res.result
                 let info = this.userInfo

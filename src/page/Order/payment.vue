@@ -5,7 +5,7 @@
         <div class="box-inner order-info">
           <h3>提交订单成功，请填写捐赠信息</h3>
           <p class="payment-detail">
-            请在 <span>半小时内</span>完成支付，超时订单将自动取消。
+            请在 <span>15</span> 分钟内完成支付，超时订单将自动取消。
           </p>
           <p class="payment-detail">
             我们不会在您完成支付后的 72 小时内发货，您的支付将用作捐赠。
