@@ -20,8 +20,6 @@
             <img src="https://t.alipayobjects.com/images/rmsweb/T13CpgXf8mXXXXXXXX.png" :class="show?'show-img':'close-img'" @click="changePic()">
             <img src="https://t.alipayobjects.com/images/rmsweb/T1ASFgXdtnXXXXXXXX.png" :class="show?'close-img':'show-img'" @click="changePic()">
           </div>
-
-          <img src="static/images/red.png" width="50px" height="50px" class="red" title="支付领红包" @click="showRed()">
         </div>
 
         <div>
@@ -42,18 +40,6 @@
 
       </div>
     </y-shelf>
-
-    <el-dialog
-      title="支付红包"
-      :visible.sync="dialogVisible"
-      width="30%"
-      @close="handleClose" style="text-align:center;width:50%;margin:0 auto">
-      <img src="http://oweupqzdv.bkt.clouddn.com/1512881761970_small.jpg" class="qr-red"/>
-      <span>支付前领个红包吧(每日可领一次)</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">领取了</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -161,14 +147,13 @@
     mounted () {
       let price = getStore('price')
       let isCustom = getStore('isCustom')
+      let qrCode = getStore('qrCode')
       this.orderTotal = this.toMoney(price)
       if (this.orderTotal === 'NaN') {
         this.$router.push({path: '/'})
       }
-      if (isCustom !== 'true') {
-        this.picName = this.orderTotal
-        this.imgPath = '/qr/alipay/' + this.picName + '.png'
-      }
+      this.picName = this.orderTotal
+      this.imgPath = qrCode
     },
     components: {
       YShelf,

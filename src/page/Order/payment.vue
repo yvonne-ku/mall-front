@@ -3,37 +3,22 @@
     <y-shelf title="支付订单">
       <div slot="content">
         <div class="box-inner order-info">
-          <h3>提交订单成功，请填写捐赠信息</h3>
+          <h3>提交订单成功，请填写支付信息</h3>
           <p class="payment-detail">
             请在 <span>15</span> 分钟内完成支付，超时订单将自动取消。
           </p>
-          <p class="payment-detail">
-            我们不会在您完成支付后的 72 小时内发货，您的支付将用作捐赠。
-          </p>
           <p class="payment-detail" style="color: red">
-            请仔细填写捐赠信息，避免系统审核失败无法在捐赠名单中显示您的数据。
+            我们不会在您完成支付后的 72 小时内发货，您的支付将用作捐赠。
           </p>
         </div>
         <div class="pay-info">
-          <span style="color: red">*</span> 昵称：<el-input
-            v-model="nickName"
-            placeholder="请输入您的昵称"
-            @change="checkValid"
-            :maxlength="maxLength"
-            class="input"
-          ></el-input
-          ><br />
-          <span style="color: red">*</span> 捐赠金额：<el-select
+          <span style="color: red">*</span> 支付金额：<el-select
             class="money-select"
             v-model="moneySelect"
             placeholder="请选择支付金额"
             @change="changeSelect"
           >
-            <el-option label="￥1.00 当前未对接支付" value="1.00"></el-option>
-            <el-option
-              label="￥148.00 网站底部加入会员服务"
-              value="148.00"
-            ></el-option>
+            <el-option label="￥1.00 捐赠通道（测试留）" value="1.00"></el-option>
             <el-option
               label="自定义 随意撒币"
               value="custom"
@@ -68,7 +53,7 @@
         </div>
         <!--支付方式-->
         <div class="pay-type">
-          <div class="p-title">支付方式</div>
+          <div class="p-title">支付方式（仅测试支付宝）</div>
           <div class="pay-item">
             <div :class="{ active: payType == 1 }" @click="payType = 1">
               <img src="@assets/images/alipay@2x.png" alt="" />
@@ -161,8 +146,9 @@
 <script>
 import YShelf from "@components/shelf";
 import YButton from "@components/YButton";
-import { getOrderDet, payMent } from "@api/goods";
-import { getStore, setStore } from "@utils/storage";
+import {getOrderDet, pay} from "@api/goods";
+import {getStore, setStore} from "@utils/storage";
+
 export default {
   data() {
     return {
@@ -184,7 +170,8 @@ export default {
       info: "",
       email: "",
       orderId: "",
-      type: "",
+      channel: "",
+      tradeType: "NATIVE_QR_CODE",
       moneySelect: "1.00",
       isCustom: false,
       maxLength: 30,
@@ -206,7 +193,6 @@ export default {
   methods: {
     checkValid() {
       if (
-        this.nickName !== "" &&
         this.money !== "" &&
         this.isMoney(this.money) &&
         this.email !== "" &&
@@ -237,7 +223,7 @@ export default {
     _getOrderDet(orderId) {
       let params = {
         params: {
-          orderId: this.orderId,
+          orderSn: orderId,
         },
       };
       getOrderDet(params).then((res) => {
@@ -252,27 +238,29 @@ export default {
       this.payNow = "支付中...";
       this.submit = false;
       if (this.payType === 1) {
-        this.type = "Alipay";
+        this.channel = "Alipay";
       } else if (this.payType === 2) {
-        this.type = "Wechat";
+        this.channel = "Wechat";
       } else if (this.payType === 3) {
-        this.type = "QQ";
+        this.channel = "QQ";
       } else {
-        this.type = "其它";
+        this.channel = "其它";
       }
-      payMent({
-        nickName: this.nickName,
+      pay({
         money: this.money,
-        info: this.info,
         email: this.email,
+        info: this.info,
         orderId: this.orderId,
         userId: this.userId,
-        payType: this.type,
+        channel: this.channel,
+        tradeType: this.tradeType
       }).then((res) => {
+        console.log(res)
         if (res.success === true) {
           setStore("setTime", 90);
           setStore("price", this.money);
           setStore("isCustom", this.isCustom);
+          setStore("qrCode", res.result.body);
           if (this.payType === 1) {
             this.$router.push({ path: "/order/alipay" });
           } else if (this.payType === 2) {

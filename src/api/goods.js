@@ -76,10 +76,9 @@ export const cancelOrder = (params) => {
 
 
 
-
 // 支付
-export const payMent = (params) => {
-  return http.fetchPost("/member/payOrder", params);
+export const pay = (params) => {
+  return http.fetchPost("/member/pay", params);
 };
 
 // 商品详情
