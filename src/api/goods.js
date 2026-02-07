@@ -80,6 +80,11 @@ export const cancelOrder = (params) => {
 export const pay = (params) => {
   return http.fetchPost("/member/pay", params);
 };
+// 查找支付状态
+export const checkPaymentStatus = (params) => {
+  return http.fetchGet("/member/pay/checkPaymentStatus", params);
+};
+
 
 // 商品详情
 export const productDet = (params) => {

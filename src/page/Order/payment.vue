@@ -260,15 +260,24 @@ export default {
           setStore("setTime", 90);
           setStore("price", this.money);
           setStore("isCustom", this.isCustom);
-          setStore("qrCode", res.result.body);
           if (this.payType === 1) {
-            this.$router.push({ path: "/order/alipay" });
+            if (this.tradeType === "NATIVE_QR_CODE") {
+              if (res.result !== null) {
+                setStore("qrCode", res.result.body);
+              } else {
+                setStore("qrCode", "/qr/alipay/1yuanYvonneKu.png");
+              }
+              this.$router.push({path: "/order/alipay"});
+            }
+            else if (this.tradeType === "NATIVE") {
+
+            }
           } else if (this.payType === 2) {
             this.$router.push({ path: "/order/wechat" });
           } else if (this.payType === 3) {
             this.$router.push({ path: "/order/qqpay" });
           } else {
-            this.$router.push({ path: "/order/alipay" });
+            this.$router.push({ path: "/order/alipay", query: { orderId: this.orderId} });
           }
         } else {
           this.payNow = "立刻支付";

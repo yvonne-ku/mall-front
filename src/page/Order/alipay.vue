@@ -1,6 +1,6 @@
 <template>
   <div class="w" style="padding-bottom: 100px;">
-    <y-shelf title="XPay收银台 收款方: Exrick">
+    <y-shelf title="XPay 收银台 收款方: yvonneku">
       <div slot="content">
         <div class="box-inner order-info">
           <p class="payment-detail">扫一扫付款（元）</p>
@@ -29,8 +29,8 @@
               
               </span>
               <em><span>¥</span>{{orderTotal}}</em>
-              <y-button :text="payNow"
-                        :classStyle="submit?'main-btn':'disabled-btn'"
+              <y-button :text="paytxt"
+                        classStyle="disabled-btn"
                         style="width: 120px;height: 40px;font-size: 16px;line-height: 38px"
                         @btnClick="paySuc()"
               ></y-button>
@@ -46,29 +46,27 @@
   import YShelf from '@components/shelf'
   import YButton from '@components/YButton'
   import { getStore, setStore } from '@utils/storage'
+  import { checkPaymentStatus, pay } from "@/api";
   export default {
     data () {
       return {
         show: true,
-        count: 25,
         userId: '',
         orderTotal: '',
         userName: '',
         tel: '',
         streetName: '',
         checkPrice: '',
-        payNow: '等待支付...',
-        submit: false,
+        paytxt: '等待支付...',
         nickName: '',
         money: '',
         info: '',
         email: '',
-        dialogVisible: true,
         isCustom: 0,
         imgPath: '/qr/alipay/custom.png',
         picName: '',
         timeout: false,
-        timecount: ''
+        polling: null,
       }
     },
     computed: {
@@ -83,77 +81,50 @@
         num = num.toLocaleString()
         return num
       },
-      handleClose () {
-        this.countDown()
-        this.countTime()
-      },
-      showRed () {
-        this.dialogVisible = true
-      },
-      countDown () {
-        let me = this
-        if (this.count === 0) {
-          this.payNow = '确认已支付'
-          this.submit = true
-          return
-        } else {
-          this.count--
-        }
-        setTimeout(function () {
-          me.countDown()
-        }, 1000)
-      },
-      countTime () {
-        let me = this
-        let time = getStore('setTime')
-        if (time <= 0) {
-          this.timeout = true
-          this.timecount = ''
-          this.count = 10000
-          return
-        } else {
-          time--
-          this.showTime(time)
-          setStore('setTime', time)
-        }
-        setTimeout(function () {
-          me.countTime()
-        }, 1000)
-      },
-      showTime (v) {
-        let m = 0
-        let s = 0
-        if (v === null || v === '') {
-          return ''
-        }
-        if (v >= 60) {
-          m = Math.floor(v / 60)
-          s = v % 60
-        } else {
-          s = v
-        }
-        if (m >= 0 && m <= 9) {
-          m = '0' + m
-        }
-        if (s >= 0 && s <= 9) {
-          s = '0' + s
-        }
-        this.timecount = '请于 ' + m + ' 分 ' + s + ' 秒 内支付'
-      },
       paySuc () {
-        this.$router.push({path: '/order/paysuccess', query: {price: this.orderTotal}})
+
+      },
+      _checkPaymentStatus() {
+        checkPaymentStatus({ params: { orderSn: this.orderId }
+        }).then((res) => {
+          if (res.success === true) {
+            let status = res.result.status
+            if (res.result.status === 'TRADE_CLOSED') {
+              this.paytxt = "交易已超时关闭"
+              this.stopPolling()
+            } else if (res.result.status === 'TRADE_SUCCESS' || res.result.status === 'TRADE_FINISHED') {
+              this.paytxt = "交易成功，正在跳转中..."
+              this.$router.push({path: '/order/paysuccess', query: { price: this.orderTotal }})
+            }
+          }
+        })
+      }
+    },
+    stopPolling() {
+      if (this.polling) {
+        clearInterval(this.polling)
+        this.polling = null
       }
     },
     mounted () {
       let price = getStore('price')
       let isCustom = getStore('isCustom')
       let qrCode = getStore('qrCode')
+      this.orderId = this.$route.query.orderId
       this.orderTotal = this.toMoney(price)
       if (this.orderTotal === 'NaN') {
         this.$router.push({path: '/'})
       }
       this.picName = this.orderTotal
       this.imgPath = qrCode
+
+      // 每 3 秒查询一次，订单支付状态
+      this.polling = setInterval(() => {
+        this._checkPaymentStatus()
+      },3000)
+    },
+    beforeDestroy() {
+      this.stopPolling()
     },
     components: {
       YShelf,
