@@ -4,20 +4,21 @@ import http from "./public";
 export const homePanel = (params) => {
   return http.fetchGet('/goods/panel', params)
 }
-
 // 全部商品
 export const homeAllGoods = (params) => {
   return http.fetchGet("/goods/allGoods", params);
 };
-
 // 推荐板块
 export const getRecommend = (params) => {
   return http.fetchGet('/goods/recommend', params)
 }
-
 // 商品列表
 export const getSearch = (params) => {
   return http.fetchGet("/goods/search", params);
+};
+// 商品详情
+export const productDet = (params) => {
+  return http.fetchGet("/goods/productDet", params);
 };
 
 
@@ -85,8 +86,3 @@ export const checkPaymentStatus = (params) => {
   return http.fetchGet("/member/pay/checkPaymentStatus", params);
 };
 
-
-// 商品详情
-export const productDet = (params) => {
-  return http.fetchGet("/goods/productDet", params);
-};

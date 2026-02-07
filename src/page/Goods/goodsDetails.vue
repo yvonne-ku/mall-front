@@ -86,7 +86,7 @@
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
       _productDet (productId) {
-        productDet({params: {productId}}).then(res => {
+        productDet({ params: { productId } }).then(res => {
           let result = res.result
           this.product = result
           this.productMsg = result.detail || ''
